@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+
+      - name: Título de la PR en Conventional Commits
+        if: github.event_name == 'pull_request'
+        env:
+          TITULO: ${{ github.event.pull_request.title }}
+        run: |
+          patron='^(feat|fix|docs|content|test|ci|chore|refactor|perf|style)(\([a-z0-9-]+\))?!?: .+'
+          if ! printf '%s' "$TITULO" | grep -Eq "$patron"; then
+            echo "::error::El título de la PR será el commit final y debe seguir Conventional Commits (feat: ..., fix: ..., content: ...). Recibido: $TITULO"
+            exit 1
+          fi
+
+      - name: Tipos
+        run: npm run typecheck
+      - name: Lint
+        run: npm run lint
+      - name: Esquema del contenido
+        run: npm run validar
+      - name: Pruebas unitarias
+        run: npm run test
+      - name: Build estático
+        run: npm run build
+      - name: Enlaces
+        run: npm run enlaces
+      - name: Navegador para las pruebas
+        run: npx playwright install --with-deps chromium
+      - name: Pruebas en navegador (escritorio y móvil, consola, accesibilidad)
+        run: npm run e2e
+      - name: Informe de Playwright
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright
+          path: test-results/
+          retention-days: 7
