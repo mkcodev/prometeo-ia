@@ -8,17 +8,24 @@ Plan aprobado el 2026-11-10. Se lee al empezar cada sesión, junto con [`DECISIO
 
 | Porción | Issue | PR | Estado |
 |---|---|---|---|
-| 0. Repo y flujo | n/a | n/a | en curso |
-| 1.1 Esqueleto, tokens de diseño, shell, primera pantalla y CI | | | pendiente |
-| 1.2 Concepto "Tokens" de principio a fin | | | pendiente |
-| 1.3a Estado, mapa, prerrequisitos y Hoy | | | pendiente |
-| 1.3b Repaso SM-2, test de bloque, rachas, niveles y plan | | | pendiente |
-| 1.3c Apuntes, paleta de comandos, exportar/importar y tarjeta | | | pendiente |
-| 1.4 Kit de visualización y 11 visualizaciones (3-4 PR) | | | pendiente |
-| 1.5 Contenido del bloque 1, test, Rayos X, test de nivel, retos | | | pendiente |
-| 1.6 Calidad y open source | | | pendiente |
+| 0. Repo y flujo | n/a | n/a | hecho |
+| 1.1 Esqueleto, tokens de diseño, shell, primera pantalla y CI | #1 | | en revisión: espera la aprobación de la primera pantalla |
+| 1.2 Concepto "Tokens" de principio a fin | #2 | | pendiente |
+| 1.3a Estado, mapa, prerrequisitos y Hoy | #3 | | pendiente |
+| 1.3b Repaso SM-2, test de bloque, rachas, niveles y plan | #4 | | pendiente |
+| 1.3c Apuntes, paleta de comandos, exportar/importar y tarjeta | #5 | | pendiente |
+| 1.4a Visualizaciones: anatomía, ventana de contexto, muestreo, determinismo | #6 | | pendiente |
+| 1.4b Visualizaciones: embeddings, alucinaciones, streaming, salidas estructuradas | #7 | | pendiente |
+| 1.4c Visualizaciones: tool calling, caché de prompts, elección de modelo | #8 | | pendiente |
+| 1.5a Contenido: anatomía, ventana de contexto, muestreo, determinismo | #9 | | pendiente |
+| 1.5b Contenido: embeddings, alucinaciones, streaming, salidas estructuradas | #10 | | pendiente |
+| 1.5c Contenido: tool calling, caché de prompts, elección de modelo | #11 | | pendiente |
+| 1.5d Glosario, test del bloque, Rayos X, test de nivel, retos | #12 | | pendiente |
+| 1.6 Calidad y open source | #13 | | pendiente |
 
 Paradas obligatorias: tras 1.1 (aprobar la primera pantalla), tras 1.2 (validar la plantilla de concepto) y tras 1.6 (revisar el bloque 1 completo).
+
+Pendiente fuera de las porciones: conectar el repo a Vercel (decisión del autor) y comprobar allí el fallback de rutas de `vercel.json`, que no se ha probado en un despliegue real.
 
 ## Contexto
 
@@ -89,8 +96,9 @@ prometeo-ia/
 **Contenido (validado con Zod en build y CI)**
 
 ```ts
-Bloque   { id, orden, titulo, resumen, puntuacion: { prioridad, demanda, dificultad, retornoEmpleo },
-           horas: { conceptos, proyecto }, opcional }   // estado del bloque: derivado de sus conceptos
+Bloque   { id, orden, titulo, tituloCorto, resumen, requiere: id[],
+           puntuacion: { prioridad, demanda, dificultad, retornoEmpleo },
+           horas: { conceptos, proyecto }, opcional, enParalelo }   // estado del bloque: derivado de sus conceptos
 Concepto { id, bloque, orden, titulo, enUnaFrase, prerrequisitos: id[], minutos, ultimaRevision: fecha,
            estado: 'borrador' | 'revisado',
            viz: idViz, snippets: { anthropic?, openai?, fetch?, aiSdk? },

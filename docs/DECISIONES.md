@@ -71,8 +71,40 @@ Antes de proponer un concepto como revisado, un subagente sin contexto previo co
 ### D-016 · Una PR por sesión, con `docs/PLAN.md` y `docs/DECISIONES.md` como memoria (autor)
 Al empezar cada sesión se leen ambos archivos; al terminar se actualiza el estado dentro de la misma PR.
 
+## 2026-11-10 — porción 1.1
+
+### D-017 · El prerender se queda (Claude)
+La salida prevista en D-006 no ha hecho falta. El build genera 22 páginas estáticas más el fallback, y las pruebas en navegador fallan ante cualquier error o aviso de consola, incluidos los de hidratación: no hay ninguno. El único desajuste intencionado es el atributo de tema en `<html>`, que se fija antes del primer pintado.
+
+### D-018 · TypeScript 6.0, no 7 (Claude)
+`typescript-eslint` 8.72 solo admite TypeScript menor que 6.1. Se sube a 7 cuando el linter lo soporte.
+
+### D-019 · Node 24 y scripts en TypeScript sin compilar (Claude)
+Los scripts de `scripts/` se ejecutan con `node archivo.ts`, sin paso de build. Obliga a sintaxis borrable (`erasableSyntaxOnly`) y a importar con la extensión `.ts`.
+**Motivo:** el mismo cargador de contenido lo usan el plugin de Vite, el validador de CI y los tests, sin duplicar nada.
+
+### D-020 · Cada bloque declara qué bloques requiere (Claude)
+Campo `requiere` en `bloque.yaml`, además de `tituloCorto` y `enParalelo`. El plan derivaba las dependencias entre bloques de los prerrequisitos de los conceptos, pero el mapa tiene que existir antes que los conceptos.
+El layout calcula también a qué lado del nodo va su nombre, para que ninguna arista cruce un texto.
+
+### D-021 · Motion se instala cuando se use (Claude)
+En esta porción no hay ninguna animación que lo necesite: las aristas del mapa se dibujan con CSS (funciona sobre el HTML prerenderizado, sin esperar a JavaScript) y las transiciones entre vistas usan la View Transitions API del navegador a través de React Router. Motion entra con las primeras microinteracciones (1.2 o 1.3).
+**Motivo:** no cargar una dependencia sin uso.
+
+### D-022 · Las porciones 1.4 y 1.5 se dividen (Claude)
+1.4 en tres PR de visualizaciones y 1.5 en cuatro de contenido (issues #6 a #12), agrupadas por los mismos conceptos.
+**Motivo:** una PR por sesión; once conceptos verificados contra sus fuentes no caben en una sola con la calidad pedida.
+
+### D-023 · La regla "sin textos en componentes" la vigila el linter (Claude)
+ESLint rechaza texto literal en JSX y en atributos como `aria-label`. Todo pasa por `t()` con claves tipadas contra `app/i18n/es.json`.
+
 ## Pendiente de decidir
 
 - Presupuesto de peso para el tokenizador, una vez medido el bundle real de `gpt-tokenizer` con una sola codificación.
 - Qué API de generación de OpenAI se usa en los ejemplos, tras revisar su documentación actual.
 - Cómo se sirve el fallback de rutas en GitHub Pages con React Router 8 (no está documentado; hay que probarlo).
+- Conectar el repositorio a Vercel y comprobar `vercel.json` en un despliegue real.
+
+## Avisos conocidos
+
+- `npm audit` informa de una vulnerabilidad moderada de denegación de servicio en `minimatch`, que llega por ESLint y `typescript-eslint`. Solo afecta a herramientas de desarrollo; no forma parte del sitio publicado. Se resuelve cuando esas dependencias actualicen.
