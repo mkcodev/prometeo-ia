@@ -1,0 +1,14 @@
+id: evals
+orden: 3
+titulo: Evals y observabilidad
+tituloCorto: Evals
+resumen: Saber si un cambio mejora o empeora el sistema. Datasets de prueba, métricas, jueces automáticos, regresiones y trazas.
+requiere: [prompt-y-contexto]
+puntuacion:
+  prioridad: 9
+  demanda: 8
+  dificultad: 6
+  retornoEmpleo: 9
+horas:
+  conceptos: 16
+  proyecto: 14

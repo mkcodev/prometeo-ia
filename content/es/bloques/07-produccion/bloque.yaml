@@ -1,0 +1,14 @@
+id: produccion
+orden: 7
+titulo: Producción
+tituloCorto: Producción
+resumen: Lo que separa una demo de un producto. Costes, latencia, caché, reintentos, fallbacks, colas, límites de uso y despliegue.
+requiere: [rag, agentes]
+puntuacion:
+  prioridad: 8
+  demanda: 9
+  dificultad: 7
+  retornoEmpleo: 9
+horas:
+  conceptos: 16
+  proyecto: 15

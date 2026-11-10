@@ -1,0 +1,14 @@
+id: fundamentos
+orden: 1
+titulo: Fundamentos de LLMs y APIs
+tituloCorto: Fundamentos
+resumen: Qué ocurre de verdad en una llamada a un modelo. Tokens, contexto, muestreo, streaming, herramientas, caché y coste.
+requiere: []
+puntuacion:
+  prioridad: 10
+  demanda: 9
+  dificultad: 4
+  retornoEmpleo: 8
+horas:
+  conceptos: 18
+  proyecto: 12

@@ -1,0 +1,15 @@
+id: teoria
+orden: 9
+titulo: Base teórica
+tituloCorto: Teoría
+resumen: Transformers y atención por dentro, con las matemáticas justas. No hace falta para construir, pero explica por qué todo lo demás funciona así.
+requiere: [fundamentos]
+puntuacion:
+  prioridad: 4
+  demanda: 3
+  dificultad: 7
+  retornoEmpleo: 4
+horas:
+  conceptos: 12
+  proyecto: 6
+opcional: true

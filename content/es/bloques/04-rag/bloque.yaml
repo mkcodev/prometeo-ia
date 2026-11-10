@@ -1,0 +1,14 @@
+id: rag
+orden: 4
+titulo: RAG
+tituloCorto: RAG
+resumen: Dar al modelo conocimiento que no tiene. Cuándo conviene, cómo trocear, buscar, reordenar y citar, y cómo medir la recuperación.
+requiere: [evals]
+puntuacion:
+  prioridad: 9
+  demanda: 10
+  dificultad: 6
+  retornoEmpleo: 10
+horas:
+  conceptos: 20
+  proyecto: 20
