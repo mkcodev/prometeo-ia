@@ -3,17 +3,21 @@ import { Link } from "react-router";
 import { bloquePorId, bloques, horasDe, mapa, type Bloque } from "~/contenido";
 import { enumerar, t } from "~/i18n";
 
-type Estado = "bloqueado" | "disponible";
+type Estado = "inicio" | "disponible" | "bloqueado";
 
 /**
- * Estado de un bloque sin progreso guardado: disponible si no requiere nada.
- * La entrega 1.3a lo sustituye por el estado real del usuario.
+ * Estado de un bloque sin progreso guardado. Solo el primer bloque lleva la
+ * brasa, como marca de "empieza aquí" (D-026); los demás que no requieren nada
+ * quedan disponibles, en contorno. La entrega 1.3a lo sustituye por el estado
+ * real del usuario.
  */
-function estadoInicial(bloque: Bloque): Estado {
+function estadoInicial(bloque: Bloque, primero: string | undefined): Estado {
+  if (bloque.id === primero) return "inicio";
   return bloque.requiere.length === 0 ? "disponible" : "bloqueado";
 }
 
 function descripcionEstado(bloque: Bloque, estado: Estado): string {
+  if (estado === "inicio") return t("mapa.estado.inicio");
   if (estado === "disponible") return t("mapa.estado.disponible");
   const requisitos = bloque.requiere.map((id) => bloquePorId(id)?.tituloCorto ?? id);
   return t("mapa.estado.bloqueado", { requisitos: enumerar(requisitos) });
@@ -50,7 +54,7 @@ export function MapaBloques() {
       <ol className="mapa-lista">
         {bloques.map((bloque) => {
           const nodo = nodoDe.get(bloque.id);
-          const estado = estadoInicial(bloque);
+          const estado = estadoInicial(bloque, primero);
           const lateral = bloque.opcional || bloque.enParalelo;
           return (
             <li

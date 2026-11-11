@@ -142,11 +142,17 @@
     border-style: dashed;
   }
 
+  /* Disponible: contorno pleno en el color del texto, sin brasa. */
   .mapa-marcador[data-estado="disponible"] {
+    border: 2px solid var(--texto);
+  }
+
+  /* Inicio: el único nodo con brasa en una visita nueva ("empieza aquí"). */
+  .mapa-marcador[data-estado="inicio"] {
     border: 2px solid var(--brasa);
   }
 
-  .mapa-marcador[data-estado="disponible"]::after {
+  .mapa-marcador[data-estado="inicio"]::after {
     content: "";
     position: absolute;
     inset: 3px;

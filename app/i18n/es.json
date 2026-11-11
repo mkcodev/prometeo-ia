@@ -29,8 +29,9 @@
   "mapa.titulo": "Mapa de habilidades",
   "mapa.horas": "{horas} h",
   "mapa.opcional": "opcional",
-  "mapa.enParalelo": "en paralelo",
+  "mapa.enParalelo": "en paralelo desde la semana 1",
   "mapa.empiezaAqui": "empieza aquí",
+  "mapa.estado.inicio": "Disponible. Es el punto de partida.",
   "mapa.estado.disponible": "Disponible.",
   "mapa.estado.bloqueado": "Antes conviene dominar: {requisitos}.",
 

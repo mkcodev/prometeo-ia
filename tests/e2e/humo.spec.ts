@@ -43,6 +43,13 @@ test("el mapa enlaza a los 10 bloques", async ({ page }) => {
   await expect(page.locator("h1")).toHaveText("Fundamentos de LLMs y APIs");
 });
 
+test("en una visita nueva solo el primer bloque lleva la brasa", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator('.mapa-marcador[data-estado="inicio"]')).toHaveCount(1);
+  const carrera = page.locator('.mapa-nodo:has(a[href="/bloque/carrera"]) .mapa-marcador');
+  await expect(carrera).toHaveAttribute("data-estado", "disponible");
+});
+
 test("el tema claro se recuerda al recargar y pasa contraste", async ({ page }) => {
   const errores = vigilarConsola(page);
   await page.goto("/");
