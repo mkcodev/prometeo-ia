@@ -282,6 +282,7 @@ Cada proyecto lleva la ficha completa pedida (tres niveles, criterios marcables,
 ## Método de trabajo
 
 - **Una PR por sesión.** Al empezar cada sesión se leen `docs/PLAN.md` y `docs/DECISIONES.md`; al terminar se actualiza el estado en `docs/PLAN.md` dentro de la misma PR.
+- **Reparto de modelos (D-024).** Las porciones con diseño nuevo tienen dos sesiones: una de diseño con Fable, que deja la especificación escrita en el issue, y otra de implementación con Opus o Sonnet, que abre la PR. Al cerrar cada sesión se dice con qué modelo conviene la siguiente.
 - **`docs/PLAN.md`** es este plan, con una tabla de estado por porción (pendiente, en curso, fusionada, con número de PR). **`docs/DECISIONES.md`** registra cada decisión con fecha, motivo y alternativa descartada; arranca con las de este documento.
 - En la fase 0 se guarda además una memoria de proyecto que apunta a ambos archivos, para que una sesión nueva los encuentre.
 

@@ -98,6 +98,28 @@ En esta porción no hay ninguna animación que lo necesite: las aristas del mapa
 ### D-023 · La regla "sin textos en componentes" la vigila el linter (Claude)
 ESLint rechaza texto literal en JSX y en atributos como `aria-label`. Todo pasa por `t()` con claves tipadas contra `app/i18n/es.json`.
 
+## 2026-11-11 — reparto de modelos
+
+### D-024 · Fable diseña y planifica; Opus o Sonnet implementan (autor)
+Solo en este proyecto. Matiza D-016: las porciones con diseño nuevo pasan a tener una sesión de diseño y una sesión de PR.
+
+- La sesión de Fable no escribe código. Termina en una especificación escrita en el issue de la porción, lo bastante concreta para implementarla sin volver a decidir: composición, estados, textos, tokens y criterios de aceptación.
+- La sesión de implementación lee el issue, además de `docs/PLAN.md` y este archivo, y abre la PR.
+- Al cerrar cada sesión se dice con qué modelo conviene la siguiente y por qué.
+
+| Porción | Diseño (Fable) | Implementación |
+|---|---|---|
+| 1.2 Tokens | Plantilla de concepto y `VizFrame` | Opus |
+| 1.3a estado, mapa y Hoy | Pantalla Hoy y estados del mapa | Opus |
+| 1.3b repaso, test, rachas y plan | Repaso, test de bloque y llama de racha | Sonnet |
+| 1.3c apuntes, paleta y exportar | Paleta de comandos y tarjeta de progreso | Sonnet |
+| 1.4a-c visualizaciones | Especificación de cada visualización | Opus |
+| 1.5a-d contenido | Ninguno | Opus |
+| 1.6 calidad y documentación | Ninguno | Sonnet |
+
+**Criterio (Claude):** Opus donde hay riesgo o hace falta rigor (estado, migraciones, hidratación, visualizaciones, contenido contrastado con fuentes); Sonnet para lo mecánico y bien especificado (lógica pura con pruebas, documentación, CI). El reparto es orientativo: si una porción resulta más difícil de lo previsto, se sube de modelo.
+**Motivo:** reservar el modelo más caro para las decisiones que no se pueden delegar.
+
 ## Pendiente de decidir
 
 - Presupuesto de peso para el tokenizador, una vez medido el bundle real de `gpt-tokenizer` con una sola codificación.
