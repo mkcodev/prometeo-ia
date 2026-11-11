@@ -128,6 +128,11 @@ Fundamentos queda en la parte superior y el avance va hacia abajo. Sustituye la 
 **Qué cambia:** el layout por capas invierte el eje vertical (un dato del script de layout, no posiciones a mano); las aristas se dibujan desde arriba, capa a capa; la brasa se propaga hacia abajo, a los bloques que se desbloquean. Los bloques opcionales o en paralelo, como "Carrera", siguen en el carril lateral, fuera del flujo principal. Al invertir el eje, la arista que baja de Evals a Agentes tachaba el detalle del nodo; el layout calcula ahora también hacia dónde crece el texto de cada nodo (`crece`), además del lado (D-020).
 **Descartado:** mantener el mapa de abajo arriba en escritorio y la lista de arriba abajo en móvil.
 
+### D-026 · En una visita nueva solo Fundamentos lleva la brasa (autor)
+La brasa del primer bloque es la marca de "empieza aquí". Los demás bloques que no requieren nada, como "Carrera", quedan disponibles: contorno pleno en el color del texto, sin brasa. "Carrera" lleva la nota "en paralelo desde la semana 1".
+**Motivo:** si dos nodos brillan, ninguno dice por dónde empezar; y la brasa debe reservarse para lo que el usuario ha empezado o dominado.
+**Qué cambia:** el estado inicial del mapa tiene tres valores (`inicio`, `disponible`, `bloqueado`). La entrega 1.3a lo sustituye por el estado real del usuario.
+
 ## Pendiente de decidir
 
 - Presupuesto de peso para el tokenizador, una vez medido el bundle real de `gpt-tokenizer` con una sola codificación.
