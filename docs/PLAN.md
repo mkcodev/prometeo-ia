@@ -9,8 +9,8 @@ Plan aprobado el 2026-11-10. Se lee al empezar cada sesión, junto con [`DECISIO
 | Porción | Issue | PR | Estado |
 |---|---|---|---|
 | 0. Repo y flujo | n/a | n/a | hecho |
-| 1.1 Esqueleto, tokens de diseño, shell, primera pantalla y CI | #1 | #14 | en revisión: CI en verde, espera la aprobación de la primera pantalla |
-| 1.2 Concepto "Tokens" de principio a fin | #2 | | pendiente |
+| 1.1 Esqueleto, tokens de diseño, shell, primera pantalla y CI | #1 | #14 | fusionada (2026-11-11), primera pantalla aprobada |
+| 1.2 Concepto "Tokens" de principio a fin | #2 | | siguiente: sesión de diseño (Fable), después implementación (Opus) |
 | 1.3a Estado, mapa, prerrequisitos y Hoy | #3 | | pendiente |
 | 1.3b Repaso SM-2, test de bloque, rachas, niveles y plan | #4 | | pendiente |
 | 1.3c Apuntes, paleta de comandos, exportar/importar y tarjeta | #5 | | pendiente |
