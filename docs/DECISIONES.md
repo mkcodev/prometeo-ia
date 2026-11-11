@@ -133,6 +133,13 @@ La brasa del primer bloque es la marca de "empieza aquí". Los demás bloques qu
 **Motivo:** si dos nodos brillan, ninguno dice por dónde empezar; y la brasa debe reservarse para lo que el usuario ha empezado o dominado.
 **Qué cambia:** el estado inicial del mapa tiene tres valores (`inicio`, `disponible`, `bloqueado`). La entrega 1.3a lo sustituye por el estado real del usuario.
 
+### D-027 · En móvil el raíl del mapa se recorre con el scroll (autor)
+El bloque del mapa se centra en la pantalla. Una chispa baja y sube por el raíl al ritmo del scroll; el tramo recorrido se aclara y cada bloque aparece desde la derecha cuando la chispa llega a su nodo, con un destello en el marcador.
+**Cómo:** mejora progresiva. El HTML prerenderizado muestra el mapa entero; `MapaBloques` activa el efecto tras montar, solo en pantallas estrechas y sin `prefers-reduced-motion`. El script escribe `--avance` y `data-visto`; el aspecto vive en CSS. Un nodo con el foco del teclado se muestra siempre.
+**Excepción asumida:** el plan reserva el resplandor para los nodos dominados. La chispa es el cursor de lectura, no un estado: los marcadores conservan su color de estado y el destello dura menos de un segundo. Cuando exista progreso real (1.3a), el tramo dominado del raíl será brasa fija y la chispa seguirá siendo el cursor.
+**Descartado:** animaciones ligadas al scroll solo con CSS (`animation-timeline: view()`), porque no funcionan en todos los navegadores móviles y no permiten llevar la chispa hasta el final cuando la página se acaba.
+**Coste:** un listener de scroll con `requestAnimationFrame`. Motion sigue sin instalarse (D-021).
+
 ## Pendiente de decidir
 
 - Presupuesto de peso para el tokenizador, una vez medido el bundle real de `gpt-tokenizer` con una sola codificación.
