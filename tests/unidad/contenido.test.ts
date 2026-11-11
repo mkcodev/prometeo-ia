@@ -51,8 +51,10 @@ describe("contenido del repositorio", () => {
     expect(bloques[0]?.requiere).toEqual([]);
   });
 
-  it("coloca en el mapa todos los bloques, con fundamentos en la base", () => {
+  it("coloca en el mapa todos los bloques, con fundamentos arriba del todo", () => {
     expect(mapa.nodos).toHaveLength(bloques.length);
-    expect(mapa.nodos.find((nodo) => nodo.id === "fundamentos")?.capa).toBe(0);
+    const fundamentos = mapa.nodos.find((nodo) => nodo.id === "fundamentos");
+    expect(fundamentos?.capa).toBe(0);
+    expect(fundamentos?.y).toBe(Math.min(...mapa.nodos.map((nodo) => nodo.y)));
   });
 });

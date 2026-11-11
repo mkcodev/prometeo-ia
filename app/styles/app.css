@@ -212,6 +212,29 @@
       margin-top: var(--ajuste);
     }
 
+    /*
+      Texto que crece hacia arriba: el marcador se alinea con el detalle, la
+      última línea, y el nombre queda encima. Evita que una arista que baja por
+      el lado del texto tache el detalle.
+    */
+    .mapa-nodo[data-crece="arriba"] {
+      --ajuste-bajo: 0.12rem;
+      transform: translate(-0.5rem, calc(-100% + 0.5rem + var(--relleno) + var(--ajuste-bajo)));
+    }
+
+    .mapa-nodo[data-crece="arriba"][data-etiqueta="izquierda"] {
+      transform: translate(0.5rem, calc(-100% + 0.5rem + var(--relleno) + var(--ajuste-bajo)));
+    }
+
+    .mapa-nodo[data-crece="arriba"] .mapa-enlace {
+      align-items: flex-end;
+    }
+
+    .mapa-nodo[data-crece="arriba"] .mapa-marcador {
+      margin-top: 0;
+      margin-bottom: var(--ajuste-bajo);
+    }
+
     .mapa-aristas {
       display: block;
       position: absolute;
@@ -222,7 +245,7 @@
   }
 }
 
-/* Aristas del mapa: se dibujan una vez, desde la base hacia arriba. */
+/* Aristas del mapa: se dibujan una vez, desde el origen, arriba, hacia abajo. */
 .arista {
   stroke: var(--ceniza);
   stroke-opacity: 0.4;

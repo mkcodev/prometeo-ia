@@ -57,6 +57,7 @@ export function MapaBloques() {
               key={bloque.id}
               className="mapa-nodo"
               data-etiqueta={nodo?.etiqueta ?? "derecha"}
+              data-crece={nodo?.crece ?? "abajo"}
               style={{ "--x": `${nodo?.x ?? 50}%`, "--y": `${nodo?.y ?? 50}%` } as CSSProperties}
             >
               <Link to={`/bloque/${bloque.id}`} viewTransition className="mapa-enlace">

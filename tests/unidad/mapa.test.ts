@@ -11,18 +11,26 @@ const nodo = (id: string, orden: number, requiere: string[] = [], extra: Partial
 });
 
 describe("calcularMapa", () => {
-  it("coloca cada nodo una capa por encima de su requisito más alto", () => {
+  it("coloca cada nodo una capa después de su requisito más lejano", () => {
     const mapa = calcularMapa([nodo("a", 1), nodo("b", 2, ["a"]), nodo("c", 3, ["a"]), nodo("d", 4, ["b", "c"])]);
     const capa = Object.fromEntries(mapa.nodos.map((n) => [n.id, n.capa]));
     expect(capa).toEqual({ a: 0, b: 1, c: 1, d: 2 });
     expect(mapa.capas).toBe(3);
   });
 
-  it("dibuja de abajo arriba: la base tiene la y más alta", () => {
+  it("dibuja de arriba abajo: el origen tiene la y más baja", () => {
     const mapa = calcularMapa([nodo("a", 1), nodo("b", 2, ["a"]), nodo("c", 3, ["b"])]);
     const y = Object.fromEntries(mapa.nodos.map((n) => [n.id, n.y]));
-    expect(y.a).toBeGreaterThan(y.b ?? 0);
-    expect(y.b).toBeGreaterThan(y.c ?? 0);
+    expect(y.a).toBeLessThan(y.b ?? 0);
+    expect(y.b).toBeLessThan(y.c ?? 0);
+  });
+
+  it("orienta cada arista del requisito, arriba, al bloque que desbloquea, abajo", () => {
+    const mapa = calcularMapa([nodo("a", 1), nodo("b", 2, ["a"]), nodo("c", 3, ["a", "b"])]);
+    const y = new Map(mapa.nodos.map((n) => [n.id, n.y]));
+    for (const arista of mapa.aristas) {
+      expect(y.get(arista.desde)).toBeLessThan(y.get(arista.hasta) ?? 0);
+    }
   });
 
   it("aparta a la derecha los nodos opcionales o en paralelo", () => {
@@ -60,6 +68,17 @@ describe("calcularMapa", () => {
     expect(lado.c).toBe("derecha");
     // a tiene aristas a ambos lados: se queda a la derecha.
     expect(lado.a).toBe("derecha");
+  });
+
+  it("hace crecer el texto hacia arriba si una arista baja por el lado del nombre", () => {
+    // a tiene debajo a b (izquierda) y a c (derecha): su nombre va a la derecha y c lo tacharía.
+    const mapa = calcularMapa([nodo("a", 1), nodo("b", 2, ["a"]), nodo("c", 3, ["a"]), nodo("d", 4, ["b", "c"])]);
+    const crece = Object.fromEntries(mapa.nodos.map((n) => [n.id, n.crece]));
+    expect(crece.a).toBe("arriba");
+    // b lleva el nombre a la izquierda, donde no hay aristas; c y d no tienen nada que baje por su lado.
+    expect(crece.b).toBe("abajo");
+    expect(crece.c).toBe("abajo");
+    expect(crece.d).toBe("abajo");
   });
 
   it("rechaza dependencias circulares", () => {

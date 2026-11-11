@@ -1,8 +1,9 @@
 /**
  * Layout determinista del mapa de habilidades.
  *
- * Capas por camino más largo: un nodo va una capa por encima de su requisito
- * más alto. La capa 0 es la base y el mapa se dibuja de abajo arriba. Dentro
+ * Capas por camino más largo: un nodo va una capa después de su requisito
+ * más lejano. La capa 0 es el origen y el mapa se dibuja de arriba abajo, en
+ * el mismo orden de lectura que la lista de móvil. Dentro
  * de una capa, los nodos del camino principal se centran y los laterales
  * (opcionales o en paralelo) se apartan a la derecha. Nadie coloca nodos a mano.
  */
@@ -20,7 +21,7 @@ export interface NodoMapa {
   capa: number;
   /** Posición horizontal, de 0 a 100. */
   x: number;
-  /** Posición vertical, de 0 (arriba) a 100 (base). */
+  /** Posición vertical, de 0 (arriba, donde está la capa 0) a 100 (abajo). */
   y: number;
   lateral: boolean;
   /**
@@ -29,6 +30,13 @@ export interface NodoMapa {
    * línea cruce el texto.
    */
   etiqueta: "derecha" | "izquierda";
+  /**
+   * Hacia dónde crece el texto desde el marcador. Lo normal es "abajo": el
+   * nombre a la altura del marcador y el detalle debajo. Pasa a "arriba" cuando
+   * por el lado del texto sale una arista inclinada hacia abajo, que tacharía
+   * el detalle.
+   */
+  crece: "abajo" | "arriba";
 }
 
 export interface AristaMapa {
@@ -110,6 +118,17 @@ export function calcularMapa(entrada: NodoEntrada[]): Mapa {
     const hayALaIzquierda = otras.some((otra) => otra < propia);
     return hayALaDerecha && !hayALaIzquierda ? "izquierda" : "derecha";
   };
+  const sentidoTexto = (id: string, lado: NodoMapa["etiqueta"]): NodoMapa["crece"] => {
+    const propia = x.get(id) ?? CENTRO;
+    const suCapa = capaDe.get(id) ?? 0;
+    const delLado = (vecinos.get(id) ?? []).filter((vecino) => {
+      const otra = x.get(vecino) ?? CENTRO;
+      return lado === "derecha" ? otra > propia : otra < propia;
+    });
+    const bajan = delLado.some((vecino) => (capaDe.get(vecino) ?? 0) > suCapa);
+    const suben = delLado.some((vecino) => (capaDe.get(vecino) ?? 0) < suCapa);
+    return bajan && !suben ? "arriba" : "abajo";
+  };
 
   const alto = 100 - MARGEN_Y * 2;
   const nodos: NodoMapa[] = entrada
@@ -117,13 +136,15 @@ export function calcularMapa(entrada: NodoEntrada[]): Mapa {
     .sort((a, b) => a.orden - b.orden)
     .map((nodo) => {
       const suCapa = capaDe.get(nodo.id) ?? 0;
+      const etiqueta = ladoEtiqueta(nodo.id);
       return {
         id: nodo.id,
         capa: suCapa,
         x: redondear(x.get(nodo.id) ?? CENTRO),
-        y: redondear(capas === 1 ? 50 : 100 - MARGEN_Y - (suCapa / (capas - 1)) * alto),
+        y: redondear(capas === 1 ? 50 : MARGEN_Y + (suCapa / (capas - 1)) * alto),
         lateral: nodo.opcional || nodo.enParalelo,
-        etiqueta: ladoEtiqueta(nodo.id),
+        etiqueta,
+        crece: sentidoTexto(nodo.id, etiqueta),
       };
     });
 
