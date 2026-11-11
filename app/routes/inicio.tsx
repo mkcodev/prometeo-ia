@@ -55,7 +55,7 @@ export default function Inicio() {
       </section>
 
       <section aria-labelledby="titulo-mapa" className="px-5 pb-10 mapa:p-0">
-        <h2 id="titulo-mapa" className="titular mb-4 text-2xl mapa:sr-only">
+        <h2 id="titulo-mapa" className="titular mb-6 text-center text-2xl mapa:sr-only">
           {t("mapa.titulo")}
         </h2>
         <MapaBloques />
