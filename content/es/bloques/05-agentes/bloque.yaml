@@ -1,0 +1,14 @@
+id: agentes
+orden: 5
+titulo: Patrones agénticos
+tituloCorto: Agentes
+resumen: Sistemas donde el modelo decide el siguiente paso. El bucle de agente, diseño de herramientas, patrones, memoria, MCP y multiagente.
+requiere: [evals]
+puntuacion:
+  prioridad: 9
+  demanda: 10
+  dificultad: 8
+  retornoEmpleo: 10
+horas:
+  conceptos: 28
+  proyecto: 25

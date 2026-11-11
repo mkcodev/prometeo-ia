@@ -71,8 +71,75 @@ Antes de proponer un concepto como revisado, un subagente sin contexto previo co
 ### D-016 · Una PR por sesión, con `docs/PLAN.md` y `docs/DECISIONES.md` como memoria (autor)
 Al empezar cada sesión se leen ambos archivos; al terminar se actualiza el estado dentro de la misma PR.
 
+## 2026-11-10 — porción 1.1
+
+### D-017 · El prerender se queda (Claude)
+La salida prevista en D-006 no ha hecho falta. El build genera 22 páginas estáticas más el fallback, y las pruebas en navegador fallan ante cualquier error o aviso de consola, incluidos los de hidratación: no hay ninguno. El único desajuste intencionado es el atributo de tema en `<html>`, que se fija antes del primer pintado.
+
+### D-018 · TypeScript 6.0, no 7 (Claude)
+`typescript-eslint` 8.72 solo admite TypeScript menor que 6.1. Se sube a 7 cuando el linter lo soporte.
+
+### D-019 · Node 24 y scripts en TypeScript sin compilar (Claude)
+Los scripts de `scripts/` se ejecutan con `node archivo.ts`, sin paso de build. Obliga a sintaxis borrable (`erasableSyntaxOnly`) y a importar con la extensión `.ts`.
+**Motivo:** el mismo cargador de contenido lo usan el plugin de Vite, el validador de CI y los tests, sin duplicar nada.
+
+### D-020 · Cada bloque declara qué bloques requiere (Claude)
+Campo `requiere` en `bloque.yaml`, además de `tituloCorto` y `enParalelo`. El plan derivaba las dependencias entre bloques de los prerrequisitos de los conceptos, pero el mapa tiene que existir antes que los conceptos.
+El layout calcula también a qué lado del nodo va su nombre, para que ninguna arista cruce un texto.
+
+### D-021 · Motion se instala cuando se use (Claude)
+En esta porción no hay ninguna animación que lo necesite: las aristas del mapa se dibujan con CSS (funciona sobre el HTML prerenderizado, sin esperar a JavaScript) y las transiciones entre vistas usan la View Transitions API del navegador a través de React Router. Motion entra con las primeras microinteracciones (1.2 o 1.3).
+**Motivo:** no cargar una dependencia sin uso.
+
+### D-022 · Las porciones 1.4 y 1.5 se dividen (Claude)
+1.4 en tres PR de visualizaciones y 1.5 en cuatro de contenido (issues #6 a #12), agrupadas por los mismos conceptos.
+**Motivo:** una PR por sesión; once conceptos verificados contra sus fuentes no caben en una sola con la calidad pedida.
+
+### D-023 · La regla "sin textos en componentes" la vigila el linter (Claude)
+ESLint rechaza texto literal en JSX y en atributos como `aria-label`. Todo pasa por `t()` con claves tipadas contra `app/i18n/es.json`.
+
+## 2026-11-11 — reparto de modelos
+
+### D-024 · Fable diseña y planifica; Opus o Sonnet implementan (autor)
+Solo en este proyecto. Matiza D-016: las porciones con diseño nuevo pasan a tener una sesión de diseño y una sesión de PR.
+
+- La sesión de Fable no escribe código. Termina en una especificación escrita en el issue de la porción, lo bastante concreta para implementarla sin volver a decidir: composición, estados, textos, tokens y criterios de aceptación.
+- La sesión de implementación lee el issue, además de `docs/PLAN.md` y este archivo, y abre la PR.
+- Al cerrar cada sesión se dice con qué modelo conviene la siguiente y por qué.
+
+| Porción | Diseño (Fable) | Implementación |
+|---|---|---|
+| 1.2 Tokens | Plantilla de concepto y `VizFrame` | Opus |
+| 1.3a estado, mapa y Hoy | Pantalla Hoy y estados del mapa | Opus |
+| 1.3b repaso, test, rachas y plan | Repaso, test de bloque y llama de racha | Sonnet |
+| 1.3c apuntes, paleta y exportar | Paleta de comandos y tarjeta de progreso | Sonnet |
+| 1.4a-c visualizaciones | Especificación de cada visualización | Opus |
+| 1.5a-d contenido | Ninguno | Opus |
+| 1.6 calidad y documentación | Ninguno | Sonnet |
+
+**Criterio (Claude):** Opus donde hay riesgo o hace falta rigor (estado, migraciones, hidratación, visualizaciones, contenido contrastado con fuentes); Sonnet para lo mecánico y bien especificado (lógica pura con pruebas, documentación, CI). El reparto es orientativo: si una porción resulta más difícil de lo previsto, se sube de modelo.
+**Motivo:** reservar el modelo más caro para las decisiones que no se pueden delegar.
+
+## 2026-11-11 — revisión de la primera pantalla
+
+### D-025 · El mapa se lee de arriba abajo: "el fuego se propaga" (autor)
+Fundamentos queda en la parte superior y el avance va hacia abajo. Sustituye la orientación inicial del plan, en la que el mapa crecía de abajo arriba ("el fuego sube").
+**Motivo:** que escritorio y móvil sigan el mismo orden de lectura; en móvil el mapa ya era una lista que empieza por Fundamentos.
+**Qué cambia:** el layout por capas invierte el eje vertical (un dato del script de layout, no posiciones a mano); las aristas se dibujan desde arriba, capa a capa; la brasa se propaga hacia abajo, a los bloques que se desbloquean. Los bloques opcionales o en paralelo, como "Carrera", siguen en el carril lateral, fuera del flujo principal. Al invertir el eje, la arista que baja de Evals a Agentes tachaba el detalle del nodo; el layout calcula ahora también hacia dónde crece el texto de cada nodo (`crece`), además del lado (D-020).
+**Descartado:** mantener el mapa de abajo arriba en escritorio y la lista de arriba abajo en móvil.
+
+### D-026 · En una visita nueva solo Fundamentos lleva la brasa (autor)
+La brasa del primer bloque es la marca de "empieza aquí". Los demás bloques que no requieren nada, como "Carrera", quedan disponibles: contorno pleno en el color del texto, sin brasa. "Carrera" lleva la nota "en paralelo desde la semana 1".
+**Motivo:** si dos nodos brillan, ninguno dice por dónde empezar; y la brasa debe reservarse para lo que el usuario ha empezado o dominado.
+**Qué cambia:** el estado inicial del mapa tiene tres valores (`inicio`, `disponible`, `bloqueado`). La entrega 1.3a lo sustituye por el estado real del usuario.
+
 ## Pendiente de decidir
 
 - Presupuesto de peso para el tokenizador, una vez medido el bundle real de `gpt-tokenizer` con una sola codificación.
 - Qué API de generación de OpenAI se usa en los ejemplos, tras revisar su documentación actual.
 - Cómo se sirve el fallback de rutas en GitHub Pages con React Router 8 (no está documentado; hay que probarlo).
+- Conectar el repositorio a Vercel y comprobar `vercel.json` en un despliegue real.
+
+## Avisos conocidos
+
+- `npm audit` informa de una vulnerabilidad moderada de denegación de servicio en `minimatch`, que llega por ESLint y `typescript-eslint`. Solo afecta a herramientas de desarrollo; no forma parte del sitio publicado. Se resuelve cuando esas dependencias actualicen.

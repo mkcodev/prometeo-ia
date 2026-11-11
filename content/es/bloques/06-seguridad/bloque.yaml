@@ -1,0 +1,14 @@
+id: seguridad
+orden: 6
+titulo: Control y seguridad
+tituloCorto: Seguridad
+resumen: Que un agente no haga lo que no debe. Prompt injection, permisos mínimos, aprobación humana, sandboxing y límites de ejecución.
+requiere: [agentes]
+puntuacion:
+  prioridad: 8
+  demanda: 7
+  dificultad: 6
+  retornoEmpleo: 8
+horas:
+  conceptos: 14
+  proyecto: 12

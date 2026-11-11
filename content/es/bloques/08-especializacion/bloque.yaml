@@ -1,0 +1,14 @@
+id: especializacion
+orden: 8
+titulo: Especialización
+tituloCorto: Especialización
+resumen: Ramas para elegir una o dos. Fine-tuning y destilación, modelos locales, multimodal y voz.
+requiere: [produccion]
+puntuacion:
+  prioridad: 5
+  demanda: 6
+  dificultad: 8
+  retornoEmpleo: 5
+horas:
+  conceptos: 14
+  proyecto: 16

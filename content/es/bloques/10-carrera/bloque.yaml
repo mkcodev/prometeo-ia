@@ -1,0 +1,15 @@
+id: carrera
+orden: 10
+titulo: Carrera
+tituloCorto: Carrera
+resumen: Convertir lo aprendido en empleo. Desarrollo asistido por IA, portfolio, entrevistas, marco legal europeo y cómo mantenerse al día.
+requiere: []
+puntuacion:
+  prioridad: 8
+  demanda: null
+  dificultad: 2
+  retornoEmpleo: 10
+horas:
+  conceptos: 10
+  proyecto: 8
+enParalelo: true

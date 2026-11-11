@@ -8,17 +8,24 @@ Plan aprobado el 2026-11-10. Se lee al empezar cada sesión, junto con [`DECISIO
 
 | Porción | Issue | PR | Estado |
 |---|---|---|---|
-| 0. Repo y flujo | n/a | n/a | en curso |
-| 1.1 Esqueleto, tokens de diseño, shell, primera pantalla y CI | | | pendiente |
-| 1.2 Concepto "Tokens" de principio a fin | | | pendiente |
-| 1.3a Estado, mapa, prerrequisitos y Hoy | | | pendiente |
-| 1.3b Repaso SM-2, test de bloque, rachas, niveles y plan | | | pendiente |
-| 1.3c Apuntes, paleta de comandos, exportar/importar y tarjeta | | | pendiente |
-| 1.4 Kit de visualización y 11 visualizaciones (3-4 PR) | | | pendiente |
-| 1.5 Contenido del bloque 1, test, Rayos X, test de nivel, retos | | | pendiente |
-| 1.6 Calidad y open source | | | pendiente |
+| 0. Repo y flujo | n/a | n/a | hecho |
+| 1.1 Esqueleto, tokens de diseño, shell, primera pantalla y CI | #1 | #14 | fusionada (2026-11-11), primera pantalla aprobada |
+| 1.2 Concepto "Tokens" de principio a fin | #2 | | siguiente: sesión de diseño (Fable), después implementación (Opus) |
+| 1.3a Estado, mapa, prerrequisitos y Hoy | #3 | | pendiente |
+| 1.3b Repaso SM-2, test de bloque, rachas, niveles y plan | #4 | | pendiente |
+| 1.3c Apuntes, paleta de comandos, exportar/importar y tarjeta | #5 | | pendiente |
+| 1.4a Visualizaciones: anatomía, ventana de contexto, muestreo, determinismo | #6 | | pendiente |
+| 1.4b Visualizaciones: embeddings, alucinaciones, streaming, salidas estructuradas | #7 | | pendiente |
+| 1.4c Visualizaciones: tool calling, caché de prompts, elección de modelo | #8 | | pendiente |
+| 1.5a Contenido: anatomía, ventana de contexto, muestreo, determinismo | #9 | | pendiente |
+| 1.5b Contenido: embeddings, alucinaciones, streaming, salidas estructuradas | #10 | | pendiente |
+| 1.5c Contenido: tool calling, caché de prompts, elección de modelo | #11 | | pendiente |
+| 1.5d Glosario, test del bloque, Rayos X, test de nivel, retos | #12 | | pendiente |
+| 1.6 Calidad y open source | #13 | | pendiente |
 
 Paradas obligatorias: tras 1.1 (aprobar la primera pantalla), tras 1.2 (validar la plantilla de concepto) y tras 1.6 (revisar el bloque 1 completo).
+
+Pendiente fuera de las porciones: conectar el repo a Vercel (decisión del autor) y comprobar allí el fallback de rutas de `vercel.json`, que no se ha probado en un despliegue real.
 
 ## Contexto
 
@@ -89,8 +96,9 @@ prometeo-ia/
 **Contenido (validado con Zod en build y CI)**
 
 ```ts
-Bloque   { id, orden, titulo, resumen, puntuacion: { prioridad, demanda, dificultad, retornoEmpleo },
-           horas: { conceptos, proyecto }, opcional }   // estado del bloque: derivado de sus conceptos
+Bloque   { id, orden, titulo, tituloCorto, resumen, requiere: id[],
+           puntuacion: { prioridad, demanda, dificultad, retornoEmpleo },
+           horas: { conceptos, proyecto }, opcional, enParalelo }   // estado del bloque: derivado de sus conceptos
 Concepto { id, bloque, orden, titulo, enUnaFrase, prerrequisitos: id[], minutos, ultimaRevision: fecha,
            estado: 'borrador' | 'revisado',
            viz: idViz, snippets: { anthropic?, openai?, fetch?, aiSdk? },
@@ -127,7 +135,7 @@ ajustes    { tema, pestañaSdk, movimiento, preciosEditados }
 
 ## Sistema de diseño
 
-**Dirección visual.** Fuego en la noche: una interfaz fría y callada donde lo único caliente es lo que el usuario ha aprendido. El fondo es un pizarra azulado oscuro, no un negro teñido; sobre él, un solo acento ámbar que funciona como escala de temperatura y codifica el dominio: ceniza para lo bloqueado, contorno para lo disponible, rescoldo para lo que está en curso y brasa plena para lo dominado. El resplandor existe solo en nodos dominados, así que siempre significa algo. El mapa crece de abajo arriba, como sube el fuego: los fundamentos en la base y cada bloque dominado propaga la brasa por las aristas hacia los siguientes. La lectura larga va en una serif pensada para pantalla y la interfaz en una grotesca con eje de anchura que da carácter a los títulos sin segunda familia de exhibición. Todo lo demás es contenido: sin tarjetas idénticas en rejilla, sin etiquetas en mayúsculas espaciadas, sin degradados.
+**Dirección visual.** Fuego en la noche: una interfaz fría y callada donde lo único caliente es lo que el usuario ha aprendido. El fondo es un pizarra azulado oscuro, no un negro teñido; sobre él, un solo acento ámbar que funciona como escala de temperatura y codifica el dominio: ceniza para lo bloqueado, contorno para lo disponible, rescoldo para lo que está en curso y brasa plena para lo dominado. El resplandor existe solo en nodos dominados, así que siempre significa algo. El fuego se propaga: el mapa se lee de arriba abajo, con los fundamentos en lo alto, y cada bloque dominado pasa la brasa por las aristas a los que desbloquea, debajo. Escritorio y móvil siguen así el mismo orden de lectura (D-025). La lectura larga va en una serif pensada para pantalla y la interfaz en una grotesca con eje de anchura que da carácter a los títulos sin segunda familia de exhibición. Todo lo demás es contenido: sin tarjetas idénticas en rejilla, sin etiquetas en mayúsculas espaciadas, sin degradados.
 
 **Tokens**
 
@@ -147,7 +155,7 @@ Rojo de error y verde de acierto solo dentro de tests y diffs, nunca como decora
 - Archivo: interfaz en anchura normal; títulos en anchura expandida y peso alto.
 - Martian Mono: solo código y tokens.
 
-**Movimiento.** Un único momento orquestado al cargar el mapa (las aristas se dibujan desde la base, una vez). El resto responde a acciones: dominar un concepto propaga la brasa por la arista a los nodos que desbloquea; cerrar un bloque enciende su racimo en secuencia, sin confeti. Con `prefers-reduced-motion`, cambios de estado instantáneos con fundido.
+**Movimiento.** Un único momento orquestado al cargar el mapa (las aristas se dibujan desde arriba, capa a capa, una vez). El resto responde a acciones: dominar un concepto propaga la brasa por la arista a los nodos que desbloquea; cerrar un bloque enciende su racimo en secuencia, sin confeti. Con `prefers-reduced-motion`, cambios de estado instantáneos con fundido.
 
 **Lenguaje común de las visualizaciones (`VizFrame`).** Mismo marco para todas: escenario, controles, lectura numérica, "qué observar", reinicio. Primitivas compartidas: deslizador, reproductor por pasos (reproducir, pausa, paso, atrás), ficha de token, barra, depósito, visor de JSON con diferencias resaltadas, panel de traza. Todas operables con teclado, con resumen en `aria-live` y datos deterministas.
 
@@ -157,21 +165,21 @@ Rojo de error y verde de acierto solo dentro de tests y diffs, nunca como decora
 ┌────────────────────────────────────────────────────────────────────────────────┐
 │ Prometeo       Hoy   Mapa   Repaso   Proyectos   Apuntes          Ctrl K   ◐   │
 ├──────────────────────────────┬─────────────────────────────────────────────────┤
-│                              │                  ○ Especialización              │
-│  El fuego de la IA,          │          ○ Producción                           │
-│  para quien construye.       │              │     ╲                            │
-│                              │          ○ Seguridad  ○ Teoría (opcional)       │
-│  De "uso ChatGPT" a llevar   │              │                                  │
-│  productos con LLMs a        │          ○ Agentes ──── ○ RAG                   │
-│  producción. 10 bloques,     │                 ╲      ╱                        │
-│  cada concepto se aprende    │                ○ Evals                          │
-│  manipulándolo.              │                   │                             │
-│                              │                ○ Prompt y contexto              │
-│  [ Hacer el test de nivel ]  │                   │                             │
-│    15 minutos                │                ◉ Fundamentos                    │
-│  Empezar por el bloque 1     │                  (único nodo con brasa)         │
-│                              │                                                 │
-│  Tus datos no salen de este  │   ○ Carrera (en paralelo, desde la semana 1)    │
+│                              │          ◉ Fundamentos           ○ Carrera      │
+│  El fuego de la IA,          │             │    ╲                (en paralelo)  │
+│  para quien construye.       │          ○ Prompt y contexto     ○ Teoría       │
+│                              │             │                      (opcional)   │
+│  De "uso ChatGPT" a llevar   │          ○ Evals                                │
+│  productos con LLMs a        │           ╱     ╲                               │
+│  producción. 10 bloques,     │      ○ RAG       ○ Agentes                      │
+│  cada concepto se aprende    │         │       ╱    │                          │
+│  manipulándolo.              │      ○ Producción   ○ Seguridad                 │
+│                              │         │                                       │
+│  [ Hacer el test de nivel ]  │      ○ Especialización                          │
+│    15 minutos                │                                                 │
+│  Empezar por el bloque 1     │   Fundamentos es el único nodo con brasa.       │
+│                              │   Carrera y Teoría van en un carril lateral,    │
+│  Tus datos no salen de este  │   fuera del flujo principal.                    │
 │  navegador. En construcción: │                                                 │
 │  bloque 1 revisado.          │                                                 │
 └──────────────────────────────┴─────────────────────────────────────────────────┘
@@ -274,6 +282,7 @@ Cada proyecto lleva la ficha completa pedida (tres niveles, criterios marcables,
 ## Método de trabajo
 
 - **Una PR por sesión.** Al empezar cada sesión se leen `docs/PLAN.md` y `docs/DECISIONES.md`; al terminar se actualiza el estado en `docs/PLAN.md` dentro de la misma PR.
+- **Reparto de modelos (D-024).** Las porciones con diseño nuevo tienen dos sesiones: una de diseño con Fable, que deja la especificación escrita en el issue, y otra de implementación con Opus o Sonnet, que abre la PR. Al cerrar cada sesión se dice con qué modelo conviene la siguiente.
 - **`docs/PLAN.md`** es este plan, con una tabla de estado por porción (pendiente, en curso, fusionada, con número de PR). **`docs/DECISIONES.md`** registra cada decisión con fecha, motivo y alternativa descartada; arranca con las de este documento.
 - En la fase 0 se guarda además una memoria de proyecto que apunta a ambos archivos, para que una sesión nueva los encuentre.
 

@@ -1,0 +1,14 @@
+id: prompt-y-contexto
+orden: 2
+titulo: Prompt y context engineering
+tituloCorto: Prompt y contexto
+resumen: Decidir qué lee el modelo y cómo. Instrucciones, ejemplos, estructura, razonamiento y prompts tratados como código.
+requiere: [fundamentos]
+puntuacion:
+  prioridad: 10
+  demanda: 9
+  dificultad: 5
+  retornoEmpleo: 8
+horas:
+  conceptos: 14
+  proyecto: 10
