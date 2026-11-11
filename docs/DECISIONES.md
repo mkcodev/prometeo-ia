@@ -120,6 +120,14 @@ Solo en este proyecto. Matiza D-016: las porciones con diseño nuevo pasan a ten
 **Criterio (Claude):** Opus donde hay riesgo o hace falta rigor (estado, migraciones, hidratación, visualizaciones, contenido contrastado con fuentes); Sonnet para lo mecánico y bien especificado (lógica pura con pruebas, documentación, CI). El reparto es orientativo: si una porción resulta más difícil de lo previsto, se sube de modelo.
 **Motivo:** reservar el modelo más caro para las decisiones que no se pueden delegar.
 
+## 2026-11-11 — revisión de la primera pantalla
+
+### D-025 · El mapa se lee de arriba abajo: "el fuego se propaga" (autor)
+Fundamentos queda en la parte superior y el avance va hacia abajo. Sustituye la orientación inicial del plan, en la que el mapa crecía de abajo arriba ("el fuego sube").
+**Motivo:** que escritorio y móvil sigan el mismo orden de lectura; en móvil el mapa ya era una lista que empieza por Fundamentos.
+**Qué cambia:** el layout por capas invierte el eje vertical (un dato del script de layout, no posiciones a mano); las aristas se dibujan desde arriba, capa a capa; la brasa se propaga hacia abajo, a los bloques que se desbloquean. Los bloques opcionales o en paralelo, como "Carrera", siguen en el carril lateral, fuera del flujo principal. Al invertir el eje, la arista que baja de Evals a Agentes tachaba el detalle del nodo; el layout calcula ahora también hacia dónde crece el texto de cada nodo (`crece`), además del lado (D-020).
+**Descartado:** mantener el mapa de abajo arriba en escritorio y la lista de arriba abajo en móvil.
+
 ## Pendiente de decidir
 
 - Presupuesto de peso para el tokenizador, una vez medido el bundle real de `gpt-tokenizer` con una sola codificación.

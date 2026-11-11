@@ -135,7 +135,7 @@ ajustes    { tema, pestañaSdk, movimiento, preciosEditados }
 
 ## Sistema de diseño
 
-**Dirección visual.** Fuego en la noche: una interfaz fría y callada donde lo único caliente es lo que el usuario ha aprendido. El fondo es un pizarra azulado oscuro, no un negro teñido; sobre él, un solo acento ámbar que funciona como escala de temperatura y codifica el dominio: ceniza para lo bloqueado, contorno para lo disponible, rescoldo para lo que está en curso y brasa plena para lo dominado. El resplandor existe solo en nodos dominados, así que siempre significa algo. El mapa crece de abajo arriba, como sube el fuego: los fundamentos en la base y cada bloque dominado propaga la brasa por las aristas hacia los siguientes. La lectura larga va en una serif pensada para pantalla y la interfaz en una grotesca con eje de anchura que da carácter a los títulos sin segunda familia de exhibición. Todo lo demás es contenido: sin tarjetas idénticas en rejilla, sin etiquetas en mayúsculas espaciadas, sin degradados.
+**Dirección visual.** Fuego en la noche: una interfaz fría y callada donde lo único caliente es lo que el usuario ha aprendido. El fondo es un pizarra azulado oscuro, no un negro teñido; sobre él, un solo acento ámbar que funciona como escala de temperatura y codifica el dominio: ceniza para lo bloqueado, contorno para lo disponible, rescoldo para lo que está en curso y brasa plena para lo dominado. El resplandor existe solo en nodos dominados, así que siempre significa algo. El fuego se propaga: el mapa se lee de arriba abajo, con los fundamentos en lo alto, y cada bloque dominado pasa la brasa por las aristas a los que desbloquea, debajo. Escritorio y móvil siguen así el mismo orden de lectura (D-025). La lectura larga va en una serif pensada para pantalla y la interfaz en una grotesca con eje de anchura que da carácter a los títulos sin segunda familia de exhibición. Todo lo demás es contenido: sin tarjetas idénticas en rejilla, sin etiquetas en mayúsculas espaciadas, sin degradados.
 
 **Tokens**
 
@@ -155,7 +155,7 @@ Rojo de error y verde de acierto solo dentro de tests y diffs, nunca como decora
 - Archivo: interfaz en anchura normal; títulos en anchura expandida y peso alto.
 - Martian Mono: solo código y tokens.
 
-**Movimiento.** Un único momento orquestado al cargar el mapa (las aristas se dibujan desde la base, una vez). El resto responde a acciones: dominar un concepto propaga la brasa por la arista a los nodos que desbloquea; cerrar un bloque enciende su racimo en secuencia, sin confeti. Con `prefers-reduced-motion`, cambios de estado instantáneos con fundido.
+**Movimiento.** Un único momento orquestado al cargar el mapa (las aristas se dibujan desde arriba, capa a capa, una vez). El resto responde a acciones: dominar un concepto propaga la brasa por la arista a los nodos que desbloquea; cerrar un bloque enciende su racimo en secuencia, sin confeti. Con `prefers-reduced-motion`, cambios de estado instantáneos con fundido.
 
 **Lenguaje común de las visualizaciones (`VizFrame`).** Mismo marco para todas: escenario, controles, lectura numérica, "qué observar", reinicio. Primitivas compartidas: deslizador, reproductor por pasos (reproducir, pausa, paso, atrás), ficha de token, barra, depósito, visor de JSON con diferencias resaltadas, panel de traza. Todas operables con teclado, con resumen en `aria-live` y datos deterministas.
 
@@ -165,21 +165,21 @@ Rojo de error y verde de acierto solo dentro de tests y diffs, nunca como decora
 ┌────────────────────────────────────────────────────────────────────────────────┐
 │ Prometeo       Hoy   Mapa   Repaso   Proyectos   Apuntes          Ctrl K   ◐   │
 ├──────────────────────────────┬─────────────────────────────────────────────────┤
-│                              │                  ○ Especialización              │
-│  El fuego de la IA,          │          ○ Producción                           │
-│  para quien construye.       │              │     ╲                            │
-│                              │          ○ Seguridad  ○ Teoría (opcional)       │
-│  De "uso ChatGPT" a llevar   │              │                                  │
-│  productos con LLMs a        │          ○ Agentes ──── ○ RAG                   │
-│  producción. 10 bloques,     │                 ╲      ╱                        │
-│  cada concepto se aprende    │                ○ Evals                          │
-│  manipulándolo.              │                   │                             │
-│                              │                ○ Prompt y contexto              │
-│  [ Hacer el test de nivel ]  │                   │                             │
-│    15 minutos                │                ◉ Fundamentos                    │
-│  Empezar por el bloque 1     │                  (único nodo con brasa)         │
-│                              │                                                 │
-│  Tus datos no salen de este  │   ○ Carrera (en paralelo, desde la semana 1)    │
+│                              │          ◉ Fundamentos           ○ Carrera      │
+│  El fuego de la IA,          │             │    ╲                (en paralelo)  │
+│  para quien construye.       │          ○ Prompt y contexto     ○ Teoría       │
+│                              │             │                      (opcional)   │
+│  De "uso ChatGPT" a llevar   │          ○ Evals                                │
+│  productos con LLMs a        │           ╱     ╲                               │
+│  producción. 10 bloques,     │      ○ RAG       ○ Agentes                      │
+│  cada concepto se aprende    │         │       ╱    │                          │
+│  manipulándolo.              │      ○ Producción   ○ Seguridad                 │
+│                              │         │                                       │
+│  [ Hacer el test de nivel ]  │      ○ Especialización                          │
+│    15 minutos                │                                                 │
+│  Empezar por el bloque 1     │   Fundamentos es el único nodo con brasa.       │
+│                              │   Carrera y Teoría van en un carril lateral,    │
+│  Tus datos no salen de este  │   fuera del flujo principal.                    │
 │  navegador. En construcción: │                                                 │
 │  bloque 1 revisado.          │                                                 │
 └──────────────────────────────┴─────────────────────────────────────────────────┘
