@@ -50,6 +50,31 @@ test("en una visita nueva solo el primer bloque lleva la brasa", async ({ page }
   await expect(carrera).toHaveAttribute("data-estado", "disponible");
 });
 
+test("en móvil el raíl se recorre con el scroll, hacia abajo y hacia arriba", async ({ page }) => {
+  test.skip((page.viewportSize()?.width ?? 0) >= 1024, "en escritorio el mapa es un grafo, sin raíl");
+  await page.goto("/");
+  const lista = page.locator(".mapa-lista");
+  const vistos = page.locator('.mapa-nodo[data-visto="true"]');
+  await expect(lista).toHaveAttribute("data-vivo", "true");
+  await expect(vistos).toHaveCount(0);
+
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  await expect(vistos).toHaveCount(10);
+  await expect(page.locator(".mapa-nodo").last().locator(".mapa-texto")).toHaveCSS("opacity", "1");
+
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect(vistos).toHaveCount(0);
+});
+
+test("con movimiento reducido el mapa móvil se ve entero, sin efecto", async ({ page }) => {
+  test.skip((page.viewportSize()?.width ?? 0) >= 1024, "en escritorio el mapa es un grafo, sin raíl");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  await expect(page.locator(".mapa-lista")).not.toHaveAttribute("data-vivo", "true");
+  await expect(page.locator(".mapa-nodo").last().locator(".mapa-texto")).toHaveCSS("opacity", "1");
+});
+
 test("el tema claro se recuerda al recargar y pasa contraste", async ({ page }) => {
   const errores = vigilarConsola(page);
   await page.goto("/");
